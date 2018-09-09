@@ -1,0 +1,23 @@
+library(arules)
+library(arulesViz)
+library(datasets)
+library(readxl)
+k <- read_excel("...k.xlsx")
+k$ec <- as.factor(k$ec)
+k$ic <- as.factor(k$ic)
+k$p <- as.factor(k$p)
+k$a <- as.factor(k$a)
+
+rules <- apriori(k, parameter = list(supp = 0.001, conf = 0.8))
+
+# Show the top 5 rules, but only 2 digits
+options(digits=2)
+inspect(rules[1:5])
+#Support: The fraction of which our item set occurs in our dataset.
+#Confidence: probability that a rule is correct for a new transaction with items on the left.
+
+rules<-apriori(data=k, parameter=list(supp=0.001,conf = 0.08), 
+               appearance = list(default="lhs",rhs="ic=b"),
+               control = list(verbose=F))
+rules<-sort(rules, decreasing=TRUE,by="confidence")
+inspect(rules[1:5])
